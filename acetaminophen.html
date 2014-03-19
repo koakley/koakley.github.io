@@ -1,0 +1,190 @@
+<style type="text/css">
+
+body {
+  width:760px;
+  margin:40px auto;
+  font-family: georgia, sans;
+}
+
+h1 {
+  border-bottom:1px solid #dedede;
+  margin-bottom:20px;
+  padding-bottom:20px;
+  text-align: center;
+}
+
+.drug-box{
+	width: 100px;
+	font-size: 14px;
+	padding: 10px;
+	border: 1px solid #ccc;
+	margin: 10px;
+	float: left;
+	height: 160px;
+}
+
+.selected {
+	background-color: red;
+	color: white;
+}
+
+#counter{
+	width: 200px;
+	font-size: 20px;
+	padding: 22px;
+	margin: 10px;
+}
+
+.death{
+	color: red;
+}
+
+#resetbutton{
+	width: 20px;
+	font-size: 14px;
+	padding: 22px;
+	margin: 10px;
+	border: 1px solid #ccc;
+}
+
+</style>
+
+<h1>How Much Acetaminophen Are You Taking?</h1>
+
+<div id="counter"></div>
+
+<div id="excedrin" class="drug-box" data-dosage=2000>
+	<img src="images/excedrin.jpg">
+	<p>Excedrin&#174; 2000mg</p>
+</div>
+
+<div id="nyquil" class="drug-box" data-dosage=2600>
+	<img src="images/nyquil.jpg">
+	<p>Nyquil&#174; 2600mg</p>
+</div>
+
+<div id="robitussin" class="drug-box" data-dosage=3840>
+	<img src="images/robitussin.jpg">
+	<p>Robitussin&#174; 3840mg</p>
+</div>
+
+<div id="sudafed" class="drug-box" data-dosage=3250>
+	<img src="images/sudafed.jpg">
+	<p>Sudafed&#174; 3250mg</p>
+</div>
+
+<div id="alkaseltzer" class="drug-box" data-dosage=2000>
+	<img src="images/alkaseltzer.jpg">
+	<p>Alka-Seltzer&#174; 2000mg</p>
+</div>
+
+<div id="theraflu" class="drug-box" data-dosage=3900>
+	<img src="images/theraflu.jpg">
+	<p>Theraflu&#174; 3900mg</p>
+</div>
+
+<div id="tylenolextrastrength" class="drug-box" data-dosage=3000>
+	<img src="images/tylenolextrastrngth.jpg">
+	<p>Extra Strength Tylenol&#174; 3000mg</p>
+</div>
+
+<div id="zicam" class="drug-box" data-dosage=3900>
+	<img src="images/zicam.jpg">
+	<p>Zicam&#174; 3900mg</p>
+</div>
+
+<div id="anacin" class="drug-box" data-dosage=4000>
+	<img src="images/anacin.jpg">
+	<p>Anacin&#174; 4000mg</p>
+</div>
+
+<div id="childrenstylenol" class="drug-box" data-dosage=800>
+	<img src="images/childrenstylenol.jpg">
+	<p>Childrens Tylenol&#174; 800mg</p>
+</div>
+
+<div id="dimetapp" class="drug-box" data-dosage=800>
+	<img src="images/dimetapp.jpg">
+	<p>Dimetapp&#174; 800mg</p>
+</div>
+
+<div id="panadol" class="drug-box" data-dosage=800>
+	<img src="images/panadol.jpg">
+	<p>Panadol&#174; 800mg</p>
+</div>
+
+<div id="dayquil" class="drug-box" data-dosage=1300>
+	<img src="images/dayquil.jpg">
+	<p>Dayquil&#174; 1300mg</p>
+</div>
+
+<div id="coricidin" class="drug-box" data-dosage=3900>
+	<img src="images/coricidin.jpg">
+	Coricidin
+</div>
+
+<div id="tylenolwcodeine" class="drug-box" data-dosage=4000>
+	<img src="images/tylenolwcodeine.jpg">
+	<p>Tylenol&#174; w/ Codeine 4000mg</p>
+</div>
+
+<div id="vicodin" class="drug-box" data-dosage=3960>
+	<img src="images/vicodin.jpg">
+	<p>Vicodin&#174; 3960mg</p>
+</div>
+
+<div id="percocet" class="drug-box" data-dosage=3900>
+	<img src="images/percoset.jpg">
+	<p>Percocet&#174; 3900mg</p>
+</div>
+
+<div id="hydrocodone" class="drug-box" data-dosage=3900>
+	<img src="images/hydrocodone.jpg">
+	<p>Hydro-codone Bitartrate 3900mg</p>
+</div>
+
+<div id="oxycodone" class="drug-box" data-dosage=3900>
+	<img src="images/oxycodone.jpg">
+	<p>Oxycodone 3900mg</p>
+</div>
+
+<div id="ultracet" class="drug-box" data-dosage=2600>
+	<img src="images/ultracet.jpg">
+	<p>Ultracet&#174; 2600mg</p>
+</div>
+
+
+
+<script type="text/javascript" src="jquery-1.11.0.min.js"></script>
+
+<script type="text/javascript">
+
+var total=0;
+var daily_max=4000;
+
+$( ".drug-box" ).click(function() {
+	var alreadyadded=$(this).hasClass("selected");
+	$( this ).toggleClass( "selected" );
+ 	console.log($(this).attr('id'));
+	var dose=($(this).attr("data-dosage"));
+	if(alreadyadded){
+		total-=parseInt(dose);
+	} else{
+		total+=parseInt(dose);
+	}
+	console.log(total);
+	$('#counter').html('Total = '+total+'mg');
+	if(parseInt(total)>=daily_max){
+		$('#counter').toggleClass("death");
+	}
+	else {
+		$('#counter').removeClass("death")	
+	}
+});
+
+$('#counter').html('Total = '+total+'mg');
+
+// this is how you comment in javascript.
+console.log("this is where javascript will go!");
+
+</script>

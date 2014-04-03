@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<style>
+
+.states {
+  fill: none;
+  stroke: #fff;
+  stroke-linejoin: round;
+}
+
+h1{
+  text-align: center;
+  font-family: Helvetica;
+  border-bottom: 1px solid black;
+  padding-bottom: 20px;
+}
+
+body{
+  width:950px;
+  margin:20px auto;
+  font-family:georgia;
+}
+
+#map{
+  margin:20px auto;
+}
+
+#table{
+  margin:20px auto;
+  padding: 20px;
+  float: left;
+
+  -webkit-column-count:6; /* Chrome, Safari, Opera */
+  -moz-column-count:6; /* Firefox */
+  column-count:6;
+}
+
+#MISS{
+  background-color: yellow;
+}
+
+td {
+  padding: 4px 0;
+  font-family: arial;
+  font-size: 12px;
+  border-bottom:1px solid #dedede;
+}
+
+table {
+  border-collapse:collapse;
+} 
+
+.Guns-cell {
+  text-align:right;
+  padding-right: 10px;
+}
+
+#MISS td {
+  font-weight: bold;
+}
+
+</style>
+
+<body>
+
+<h1>Where do Chicagoans buy guns?</h1>
+
+<div id="map">
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/queue.v1.min.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+
+<script>
+
+var width = 960,
+    height = 500;
+
+var color = d3.scale.threshold()
+    .domain([0, 5, 10, 15, 50])
+    .range(["#f6eff7","#d0d1e6","#a6bddb","#67a9cf","#1c9099","#016c59"]);
+
+var path = d3.geo.path();
+
+var svg = d3.select("#map").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+queue()
+    .defer(d3.json, "us.json")
+    .defer(d3.tsv, "gunsdata.txt")
+    .await(ready);
+
+function ready(error, us, unemployment) {
+  var rateById = {};
+
+  unemployment.forEach(function(d) { rateById[d.id] = +d.rate; });
+
+  svg.append("g")
+      .attr("class", "counties")
+    .selectAll("path")
+      .data(topojson.feature(us, us.objects.counties).features)
+    .enter().append("path")
+      .attr("d", path)
+      .style("fill", function(d) { return color(rateById[d.id]); });
+
+  svg.append("path")
+      .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a.id !== b.id; }))
+      .attr("class", "states")
+      .attr("d", path);
+
+
+}
+
+</script>
+</div>
+
+
+
+<div id="table">
+  <table>
+  <thead>
+    <tr>
+      <th class="State-cell">State</th>
+      <th class="Total Guns-cell">Total Guns</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="firstRow">
+      <td class="State-cell">IL</td>
+      <td class="Total Guns-cell">22051</td>
+    </tr>
+    <tr>
+      <td class="State-cell">IN</td>
+      <td class="Total Guns-cell">7747</td>
+    </tr>
+    <tr id="MISS">
+      <td class="State-cell">MS</td>
+      <td class="Total Guns-cell">4296</td>
+    </tr>
+    <tr>
+      <td class="State-cell">WI</td>
+      <td class="Total Guns-cell">1647</td>
+    </tr>
+    <tr>
+      <td class="State-cell">KY</td>
+      <td class="Total Guns-cell">1226</td>
+    </tr>
+    <tr>
+      <td class="State-cell">OH</td>
+      <td class="Total Guns-cell">1121</td>
+    </tr>
+    <tr>
+      <td class="State-cell">TN</td>
+      <td class="Total Guns-cell">1090</td>
+    </tr>
+    <tr>
+      <td class="State-cell">AL</td>
+      <td class="Total Guns-cell">1070</td>
+    </tr>
+    <tr>
+      <td class="State-cell">AR</td>
+      <td class="Total Guns-cell">944</td>
+    </tr>
+    <tr>
+      <td class="State-cell">TX</td>
+      <td class="Total Guns-cell">937</td>
+    </tr>
+    <tr>
+      <td class="State-cell">GA</td>
+      <td class="Total Guns-cell">933</td>
+    </tr>
+    <tr>
+      <td class="State-cell">MI</td>
+      <td class="Total Guns-cell">679</td>
+    </tr>
+    <tr>
+      <td class="State-cell">FL</td>
+      <td class="Total Guns-cell">673</td>
+    </tr>
+    <tr>
+      <td class="State-cell">LA</td>
+      <td class="Total Guns-cell">529</td>
+    </tr>
+    <tr>
+      <td class="State-cell">CA</td>
+      <td class="Total Guns-cell">526</td>
+    </tr>
+    <tr>
+      <td class="State-cell">MN</td>
+      <td class="Total Guns-cell">474</td>
+    </tr>
+    <tr>
+      <td class="State-cell">IA</td>
+      <td class="Total Guns-cell">397</td>
+    </tr>
+    <tr>
+      <td class="State-cell">AZ</td>
+      <td class="Total Guns-cell">355</td>
+    </tr>
+    <tr>
+      <td class="State-cell">MO</td>
+      <td class="Total Guns-cell">344</td>
+    </tr>
+    <tr>
+      <td class="State-cell">NC</td>
+      <td class="Total Guns-cell">295</td>
+    </tr>
+    <tr>
+      <td class="State-cell">VA</td>
+      <td class="Total Guns-cell">269</td>
+    </tr>
+    <tr>
+      <td class="State-cell">OK</td>
+      <td class="Total Guns-cell">207</td>
+    </tr>
+    <tr>
+      <td class="State-cell">WV</td>
+      <td class="Total Guns-cell">202</td>
+    </tr>
+    <tr>
+      <td class="State-cell">CO</td>
+      <td class="Total Guns-cell">187</td>
+    </tr>
+    <tr>
+      <td class="State-cell">PA</td>
+      <td class="Total Guns-cell">181</td>
+    </tr>
+    <tr>
+      <td class="State-cell">KS</td>
+      <td class="Total Guns-cell">177</td>
+    </tr>
+    <tr>
+      <td class="State-cell">WA</td>
+      <td class="Total Guns-cell">156</td>
+    </tr>
+    <tr>
+      <td class="State-cell">SC</td>
+      <td class="Total Guns-cell">152</td>
+    </tr>
+    <tr>
+      <td class="State-cell">MA</td>
+      <td class="Total Guns-cell">108</td>
+    </tr>
+    <tr>
+      <td class="State-cell">NE</td>
+      <td class="Total Guns-cell">104</td>
+    </tr>
+    <tr>
+      <td class="State-cell">NV</td>
+      <td class="Total Guns-cell">103</td>
+    </tr>
+    <tr>
+      <td class="State-cell">NY</td>
+      <td class="Total Guns-cell">97</td>
+    </tr>
+    <tr>
+      <td class="State-cell">NM</td>
+      <td class="Total Guns-cell">75</td>
+    </tr>
+    <tr>
+      <td class="State-cell">MT</td>
+      <td class="Total Guns-cell">53</td>
+    </tr>
+    <tr>
+      <td class="State-cell">UT</td>
+      <td class="Total Guns-cell">53</td>
+    </tr>
+    <tr>
+      <td class="State-cell">MD</td>
+      <td class="Total Guns-cell">50</td>
+    </tr>
+    <tr>
+      <td class="State-cell">CT</td>
+      <td class="Total Guns-cell">46</td>
+    </tr>
+    <tr>
+      <td class="State-cell">OR</td>
+      <td class="Total Guns-cell">40</td>
+    </tr>
+    <tr>
+      <td class="State-cell">ID</td>
+      <td class="Total Guns-cell">39</td>
+    </tr>
+    <tr>
+      <td class="State-cell">SD</td>
+      <td class="Total Guns-cell">36</td>
+    </tr>
+    <tr>
+      <td class="State-cell">AK</td>
+      <td class="Total Guns-cell">33</td>
+    </tr>
+    <tr>
+      <td class="State-cell">ND</td>
+      <td class="Total Guns-cell">31</td>
+    </tr>
+    <tr>
+      <td class="State-cell">WY</td>
+      <td class="Total Guns-cell">29</td>
+    </tr>
+    <tr>
+      <td class="State-cell">NJ</td>
+      <td class="Total Guns-cell">21</td>
+    </tr>
+    <tr>
+      <td class="State-cell">ME</td>
+      <td class="Total Guns-cell">18</td>
+    </tr>
+    <tr>
+      <td class="State-cell">NH</td>
+      <td class="Total Guns-cell">14</td>
+    </tr>
+    <tr>
+      <td class="State-cell">DE</td>
+      <td class="Total Guns-cell">10</td>
+    </tr>
+    <tr>
+      <td class="State-cell">HI</td>
+      <td class="Total Guns-cell">8</td>
+    </tr>
+    <tr>
+      <td class="State-cell">RI</td>
+      <td class="Total Guns-cell">5</td>
+    </tr>
+    <tr>
+      <td class="State-cell">VT</td>
+      <td class="Total Guns-cell">4</td>
+    </tr>
+    <tr class="lastRow">
+      <td class="State-cell">DC</td>
+      <td class="Total Guns-cell">2</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+</body>
